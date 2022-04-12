@@ -5,11 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      "<nixos-hardware/raspberry-pi/4>"
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    "<nixos-hardware/raspberry-pi/4>"
+  ];
 
   #  === Bootloader configuration. ===
 
@@ -19,11 +18,11 @@
     initrd.availableKernelModules = [ "usbhid" "usb_storage" ];
     # ttyAMA0 is the serial console broken out to the GPIO
     kernelParams = [
-        "8250.nr_uarts=1"
-        "console=ttyAMA0,115200"
-        "console=tty1"
-        # A lot GUI programs need this, nearly all wayland applications
-        "cma=256M"
+      "8250.nr_uarts=1"
+      "console=ttyAMA0,115200"
+      "console=tty1"
+      # A lot GUI programs need this, nearly all wayland applications
+      "cma=256M"
     ];
   };
 
@@ -40,11 +39,11 @@
   # Don't spam logs about missing SD cards
   boot.loader.raspberryPi.firmwareConfig = "dtparam=sd_poll_once=on";
 
-
   # === Network configuration. ===
 
   networking.hostName = "cappynas"; # Define your hostname.
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.wireless.enable =
+    true; # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
   time.timeZone = "Asia/Bangkok";
@@ -105,11 +104,17 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  #   firefox
-  # ];
+  environment.systemPackages = with pkgs; [
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    firefox
+    git
+    docker
+    docker-compose
+    gnumake
+    arion
+    btrfs-progs
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -142,7 +147,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
