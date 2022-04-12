@@ -10,11 +10,46 @@
     enable = true;
     openFirewall = true;
     home = "/srv/nas/config/transmission";
-    port = 9091;
+    rpc-port = 9091;
     openRPCPort = true;
     settings.rpc-whitelist-enabled = false;
     settings.rpc-bind-address = "0.0.0.0";
     credentialsFile = "/srv/nas/config/transmission.json";
     settings.download-dir = "/srv/nas/storage/Torrents/Transmission";
+  };
+
+  # Samba
+  services.samba-wsdd.enable = true; # make shares visible for windows 10 clients
+  networking.firewall.allowedTCPPorts = [
+    5357 # wsdd
+  ];
+  networking.firewall.allowedUDPPorts = [
+    3702 # wsdd
+  ];
+  services.samba = {
+  enable = true;
+  securityType = "user";
+  extraConfig = ''
+    workgroup = WORKGROUP
+    server string = smbnix
+    netbios name = smbnix
+    security = user
+    #use sendfile = yes
+    #max protocol = smb2
+    # note: localhost is the ipv6 localhost ::1
+    hosts allow = 192.168.0 192.168.1 127.0.0.1 localhost 0.0.0.0/0
+    guest account = nobody
+    map to guest = bad user
+  '';
+  shares = {
+    nas = {
+      path = "/srv/nas/storage/";
+      browseable = "yes";
+      "read only" = "no";
+      "guest ok" = "yes";
+      writeable = "yes";
+      "create mask" = "0777";
+      "directory mask" = "0777";
+    };
   };
 }
