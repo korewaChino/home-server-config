@@ -75,7 +75,7 @@
   # == Services ==
   # Import nix-hardware channel
   let
-    nix-hardware = builtins.fetchTarball "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz";
+    nix-hardware = builtins.fetchTarball{"https://github.com/NixOS/nixos-hardware/archive/master.tar.gz"};
   in
   {
     imports = [
