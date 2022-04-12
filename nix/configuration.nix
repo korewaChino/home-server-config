@@ -7,6 +7,7 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./services.nix
     "${fetchTarball "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz" }/raspberry-pi/4"
   ];
 
@@ -98,10 +99,6 @@
   };
 
   # == Stuff ==
-
-  # Docker
-  virtualisation.docker.enable = true;
-  virtualisation.docker.extraOptions = " -g /srv/nas/docker";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
