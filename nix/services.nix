@@ -15,6 +15,6 @@
     settings.rpc-whitelist-enabled = false;
     settings.rpc-bind-address = "0.0.0.0";
     credentialsFile = "/srv/nas/config/transmission.json";
-    settings.download-dir = "/srv/nas/storage/Torrents/Transmission"
+    settings.download-dir = "/srv/nas/storage/Torrents/Transmission";
   };
 }
