@@ -56,4 +56,8 @@
 
   # Netdata
   services.netdata = { enable = true; };
+  services.netdata.configText = ''
+  [global]
+    memory mode = dbengine
+  '';
 }
