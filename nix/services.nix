@@ -53,4 +53,7 @@
       };
     };
   };
+
+  # Netdata
+  services.netdata = { enable = true; };
 }
