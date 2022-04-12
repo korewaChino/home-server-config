@@ -88,7 +88,7 @@
   hardware.pulseaudio.enable = true;
 
   # GPU acceleration
-  hardware.raspberry-pi."4".fkms-3d.enable = true
+  hardware.raspberry-pi."4".fkms-3d.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
