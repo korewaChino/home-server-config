@@ -101,6 +101,7 @@
 
   # Docker
   virtualisation.docker.enable = true;
+  virtualisation.docker.extraOptions = " -g /srv/nas/docker";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
