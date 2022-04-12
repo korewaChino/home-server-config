@@ -59,6 +59,6 @@
   services.netdata.config = {
     global = {
       "memory mode" = "dbengine";
-    }
+    };
   };
 }
