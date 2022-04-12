@@ -7,7 +7,8 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      ./hardware-configuration.nix,
+      "${fetchTarball "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz" }/raspberry-pi/4"
     ];
 
   #  === Bootloader configuration. ===
@@ -73,15 +74,6 @@
   # services.xserver.enable = true;
 
   # == Services ==
-  # Import nix-hardware channel
-  let
-    nix-hardware = builtins.fetchTarball{"https://github.com/NixOS/nixos-hardware/archive/master.tar.gz"};
-  in
-  {
-    imports = [
-      (import "${nix-hardware}/raspberry-pi/4")
-    ]
-  }
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
