@@ -7,7 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix,
+      ./hardware-configuration.nix
       "${fetchTarball "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz" }/raspberry-pi/4"
     ];
 
