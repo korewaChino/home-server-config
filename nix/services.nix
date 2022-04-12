@@ -10,7 +10,7 @@
     enable = true;
     openFirewall = true;
     home = "/srv/nas/config/transmission";
-    rpc-port = 9091;
+    settings.rpc-port = 9091;
     openRPCPort = true;
     settings.rpc-whitelist-enabled = false;
     settings.rpc-bind-address = "0.0.0.0";
