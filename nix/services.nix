@@ -42,14 +42,15 @@
     map to guest = bad user
   '';
   shares = {
-    nas = {
-      path = "/srv/nas/storage/";
-      browseable = "yes";
-      "read only" = "no";
-      "guest ok" = "yes";
-      writeable = "yes";
-      "create mask" = "0777";
-      "directory mask" = "0777";
+      nas = {
+        path = "/srv/nas/storage/";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "yes";
+        writeable = "yes";
+        "create mask" = "0777";
+        "directory mask" = "0777";
+      };
     };
   };
 }
