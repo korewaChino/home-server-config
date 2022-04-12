@@ -10,10 +10,11 @@
     enable = true;
     openFirewall = true;
     home = "/srv/nas/config/transmission";
-    settings = {
-        rpc-whitelist-enabled = false;
-        rpc-bind-address = "0.0.0.0";
-        download-dir = "/srv/nas/storage/Torrents/Transmission"
-    };
+    port = 9091;
+    openRPCPort = true;
+    settings.rpc-whitelist-enabled = false;
+    settings.rpc-bind-address = "0.0.0.0";
+    credentialsFile = "/srv/nas/config/transmission.json";
+    settings.download-dir = "/srv/nas/storage/Torrents/Transmission"
   };
 }
