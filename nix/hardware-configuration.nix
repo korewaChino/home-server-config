@@ -19,7 +19,7 @@
         fsType = "ext4";
     };
   fileSystems."/srv/nas" =
-    { device = "/dev/disk/by-uuid/1ff44ed1-8806-4c90-a0fc-b1b1f564fe02";
+    { device = "/dev/disk/by-label/NAS";
       fsType = "btrfs";
     };
 

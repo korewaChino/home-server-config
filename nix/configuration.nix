@@ -114,6 +114,7 @@
     gnumake
     arion
     btrfs-progs
+    libraspberrypi
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
