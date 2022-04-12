@@ -7,7 +7,7 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    "<nixos-hardware/raspberry-pi/4>"
+    "${fetchTarball "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz" }/raspberry-pi/4"
   ];
 
   #  === Bootloader configuration. ===
