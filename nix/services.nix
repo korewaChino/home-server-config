@@ -61,4 +61,13 @@
       "memory mode" = "dbengine";
     };
   };
+  # Avahi
+  services.avahi = {
+  enable = true;
+  publish = {
+    enable = true;
+    addresses = true;
+    workstation = true;
+  };
+};
 }
