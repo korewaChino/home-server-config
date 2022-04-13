@@ -31,8 +31,8 @@
   securityType = "user";
   extraConfig = ''
     workgroup = WORKGROUP
-    server string = smbnix
-    netbios name = smbnix
+    server string = cappynas
+    netbios name = cappynas
     security = user
     #use sendfile = yes
     #max protocol = smb2
