@@ -68,6 +68,14 @@
     enable = true;
     addresses = true;
     workstation = true;
+    };
   };
-};
+
+  # ZeroTier
+  services.zerotierone = {
+    enable = true;
+    joinNetworks = [
+      "35c192ce9b461731"
+    ];
+  };
 }
