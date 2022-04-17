@@ -5,6 +5,8 @@
 { config, pkgs, ... }:
 
 {
+  # Allow non-free packages, becasue I do not care lol
+  nixpkgs.config.allowUnfree = true;
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./services.nix
