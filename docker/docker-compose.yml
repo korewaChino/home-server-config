@@ -38,11 +38,10 @@ services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin
     container_name: jellyfin
-    user: 1001:1001
     network_mode: "host"
     environment:
-      - PUID=1001
-      - PGID=1001
+      - PUID=1000
+      - PGID=1000
       - TZ=Asia/Bangkok
     volumes:
       - /srv/nas/config/jellyfin:/config
