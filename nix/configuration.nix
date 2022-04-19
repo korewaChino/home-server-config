@@ -11,6 +11,7 @@
     ./hardware-configuration.nix
     ./services.nix
     "${fetchTarball "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz" }/raspberry-pi/4"
+    (fetchTarball "https://github.com/msteen/nixos-vscode-server/tarball/master")
   ];
 
   #  === Bootloader configuration. ===
@@ -143,6 +144,9 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  # VSCode SSH Fix
+  services.vscode-server.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
