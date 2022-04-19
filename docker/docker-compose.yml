@@ -36,21 +36,18 @@ services:
     restart: unless-stopped
 
   jellyfin:
-    image: lscr.io/linuxserver/jellyfin
+    image: jellyfin/jellyfin
     container_name: jellyfin
     network_mode: "host"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Bangkok
     volumes:
-      - /srv/nas/config/jellyfin:/config
+      - /srv/nas/config/jellyfin/:/config
       - /srv/nas/storage/Media:/media
     devices:
       - /dev/video10:/dev/video10
       - /dev/video11:/dev/video11
       - /dev/video12:/dev/video12
     restart: "unless-stopped"
+
 
   prowlarr:
     image: ghcr.io/linuxserver/prowlarr:develop
