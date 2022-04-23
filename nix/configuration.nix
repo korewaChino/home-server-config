@@ -126,6 +126,9 @@
     enableSSHSupport = true;
   };
 
+  # zram
+  zramSwap.enable = true;
+
   nix = {
     autoOptimiseStore = true;
     gc = {

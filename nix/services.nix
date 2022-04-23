@@ -12,10 +12,17 @@
     home = "/srv/nas/config/transmission";
     settings.rpc-port = 9091;
     openRPCPort = true;
-    settings.rpc-whitelist-enabled = false;
-    settings.rpc-bind-address = "0.0.0.0";
     credentialsFile = "/srv/nas/config/transmission.json";
-    settings.download-dir = "/srv/nas/storage/Torrents/Transmission";
+    downloadDirPermissions = "777";
+    settings = {
+      rpc-whitelist-enabled = false;
+      rpc-bind-address = "0.0.0.0";
+      download-dir = "/srv/nas/storage/Torrents/Transmission";
+      incomplete-dir-enabled = false;
+      umask = 0;
+      ratio-limit-enabled = true;
+      ratio-limit = 0;
+    };
   };
 
   # Samba
