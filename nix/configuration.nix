@@ -14,27 +14,15 @@
     (fetchTarball "https://github.com/msteen/nixos-vscode-server/tarball/master")
   ];
 
-  #  === Bootloader configuration. ===
+  #boot.loader.raspberryPi = {
+  #  enable = true;
+  #  version = 4;
+  #};
 
-  boot = {
-    kernelPackages = pkgs.linuxPackages_rpi4;
-    tmpOnTmpfs = true;
-    initrd.availableKernelModules = [ "usbhid" "usb_storage" ];
-    # ttyAMA0 is the serial console broken out to the GPIO
-    kernelParams = [
-      "8250.nr_uarts=1"
-      "console=ttyAMA0,115200"
-      "console=tty1"
-      # A lot GUI programs need this, nearly all wayland applications
-      "cma=256M"
-    ];
-  };
-
-  boot.loader.raspberryPi = {
-    enable = true;
-    version = 4;
-  };
-
+  services.logind.extraConfig = ''
+    RuntimeDirectorySize=4G
+    RuntimeDirectoryInodesMax=1048576  
+  '';
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
   # Required for the Wireless firmware
@@ -47,7 +35,7 @@
 
   networking.hostName = "cappynas"; # Define your hostname.
   networking.wireless.enable =
-    true; # Enables wireless support via wpa_supplicant.
+    false; # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
   time.timeZone = "Asia/Bangkok";
@@ -157,12 +145,17 @@
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
 
+  services.nfs.server.enable = true;
+  services.nfs.server.exports = ''/srv/nas/storage         *(rw,nohide,insecure,no_subtree_check)
+/export/nas         *(rw,nohide,insecure,no_subtree_check)
+
+  '';
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "21.11"; # Did you read the comment?
+  system.stateVersion = "22.05"; # Did you read the comment?
 
 }

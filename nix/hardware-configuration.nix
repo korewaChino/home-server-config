@@ -12,6 +12,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+  #tmpfsOpts = [ "nosuid" "nodev" "relatime" "size=4G" ];
 
   fileSystems."/" =
     {
@@ -22,6 +23,16 @@
     { device = "/dev/disk/by-label/NAS";
       fsType = "btrfs";
     };
+
+  #fileSystems."/tmp" =
+  #  { device = "tmpfs";
+  #    fsType = "tmpfs";
+  #    options = [ "nosuid" "nodev" "relatime" "size=4G" ];
+  #  };
+  fileSystems."/export/nas" = {
+    device = "/srv/nas/storage";
+    options = [ "bind" ];
+  };
 
   swapDevices = [ ];
 

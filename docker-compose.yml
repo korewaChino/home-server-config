@@ -1,7 +1,6 @@
 ---
 version: "3"
 services:
-
   jackett:
     image: ghcr.io/linuxserver/jackett
     container_name: jackett
@@ -83,13 +82,13 @@ services:
       - fpm=false
       - branch=v2-master
     ports:
-      - '80:80'
+      - "8888:80"
     image: organizr/organizr
 
   jfa-go:
     container_name: jfa-go
     ports:
-      - '8056:8056'
+      - "8056:8056"
     volumes:
       - /srv/nas/config/jfa-go:/data
       - /srv/nas/config/jellyfin:/jf
@@ -99,11 +98,26 @@ services:
   tanoshi:
     container_name: tanoshi
     ports:
-      - '8080:80'
+      - "8005:80"
     volumes:
       - /srv/nas/config/tanoshi:/tanoshi
     restart: unless-stopped
     image: faldez/tanoshi
+
+
+  mylar3:
+    image: lscr.io/linuxserver/mylar3:latest
+    container_name: mylar3
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - mylar-config:/config
+      - /srv/nas/storage/Media/Comics:/comics
+      - mylar-downloads:/downloads
+    ports:
+      - 8090:8090
+    restart: unless-stopped
 
   komga:
     image: gotson/komga
@@ -114,3 +128,73 @@ services:
     ports:
       - 8216:8080
     restart: unless-stopped
+
+  nextcloud:
+    image: nextcloud/all-in-one:latest-arm64 # Must be changed to 'nextcloud/all-in-one:latest-arm64' when used with an arm64 CPU
+    restart: always
+    container_name: nextcloud-aio-mastercontainer
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8008:80 # Can be removed when running behind a reverse proxy. See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+      - 8080:8080
+      - 8443:8443 # Can be removed when running behind a reverse proxy. See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+    environment: # Is needed when using any of the options below
+      - APACHE_PORT=11000 # Is needed when running behind a reverse proxy. See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+      # - NEXTCLOUD_DATADIR="/mnt/ncdata" # Allows to set the host directory for Nextcloud's datadir. See https://github.com/nextcloud/all-in-one#how-to-change-the-default-location-of-nextclouds-datadir
+      # - NEXTCLOUD_MOUNT="/mnt/" # Allows the Nextcloud container to access the chosen directory on the host. See https://github.com/nextcloud/all-in-one#how-to-allow-the-nextcloud-container-to-access-directories-on-the-host
+
+  # # Optional: Caddy reverse proxy. See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+  # # You can find further examples here: https://github.com/nextcloud/all-in-one/discussions/588
+  # caddy:
+  #   image: caddy:alpine
+  #   restart: always
+  #   container_name: caddy
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile
+  #     - ./certs:/certs
+  #     - ./config:/config
+  #     - ./data:/data
+  #     - ./sites:/srv
+  cloudflared:
+    image: erisamoe/cloudflared
+    container_name: cloudflared
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
+    restart: unless-stopped
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+  ombi:
+    image: lscr.io/linuxserver/ombi:latest
+    container_name: ombi
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Bangkok
+      - BASE_URL=/ombi #optional
+    volumes:
+      - /srv/nas/config/ombi:/config
+    ports:
+      - 3579:3579
+    restart: unless-stopped
+
+  static-file-server:
+    volumes:
+      #- '/srv/nas/storage/html:/content/html'
+      - '/srv/nas/storage/public:/content'
+    environment:
+      - FOLDER=/content
+    ports:
+      - '80:8080'
+    image: 'halverneus/static-file-server:latest'
+volumes:
+  netdatalib:
+  netdatacache:
+  nextcloud_aio_mastercontainer:
+  mylar-config:
+  mylar-downloads:
+

@@ -1,3 +1,3 @@
 all:
 	- cp -rv ./* /etc/nixos/
-	- nixos-rebuild switch --fast
+	- nixos-rebuild switch --fast -v

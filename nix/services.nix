@@ -24,6 +24,12 @@
       ratio-limit = 0;
     };
   };
+  services.nzbget = {
+    enable = true;
+    settings = {
+      MainDir = "/srv/nas/storage/Usenet";
+    };
+  };
 
   # Samba
   services.samba-wsdd.enable = true; # make shares visible for windows 10 clients
@@ -61,13 +67,6 @@
     };
   };
 
-  # Netdata
-  services.netdata = { enable = true; };
-  services.netdata.config = {
-    global = {
-      "memory mode" = "dbengine";
-    };
-  };
   # Avahi
   services.avahi = {
   enable = true;
@@ -76,13 +75,5 @@
     addresses = true;
     workstation = true;
     };
-  };
-
-  # ZeroTier
-  services.zerotierone = {
-    enable = true;
-    joinNetworks = [
-      "35c192ce9b461731"
-    ];
   };
 }
