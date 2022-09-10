@@ -18,10 +18,12 @@
   #  enable = true;
   #  version = 4;
   #};
+  # For convenience's sake. Actually not secure
+  security.sudo.wheelNeedsPassword = false;
 
   services.logind.extraConfig = ''
     RuntimeDirectorySize=4G
-    RuntimeDirectoryInodesMax=1048576  
+    RuntimeDirectoryInodesMax=1048576
   '';
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
@@ -32,7 +34,6 @@
   boot.loader.raspberryPi.firmwareConfig = "dtparam=sd_poll_once=on";
 
   # === Network configuration. ===
-
   networking.hostName = "cappynas"; # Define your hostname.
   networking.wireless.enable =
     false; # Enables wireless support via wpa_supplicant.
@@ -96,7 +97,6 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    firefox
     git
     docker
     docker-compose
@@ -104,6 +104,7 @@
     arion
     btrfs-progs
     libraspberrypi
+    ncdu_2
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
 
   jellyfin:
-    image: jellyfin/jellyfin:10.8.0-beta2
+    image: jellyfin/jellyfin:10.8.0
     container_name: jellyfin
     network_mode: "host"
     volumes:
@@ -56,6 +56,29 @@ services:
     ports:
       - 7878:7878
     restart: unless-stopped
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /srv/nas/config/lidarr:/config
+      - /srv/nas/storage/Media/Music:/music #optional
+      - /srv/nas/storage/Torrents:/downloads #optional
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+
+  transmission-tracker-add:
+    network_mode: host
+    environment:
+      - "HOSTPORT=192.168.1.38:9091"
+      - "TR_AUTH=transmission:${TRANSMISSION_PASSWORD}"
+    container_name: transmission-tracker-add
+    image: "andrewmhub/transmission-tracker-add:latest"
 
   sonarr:
     image: ghcr.io/linuxserver/sonarr
@@ -104,7 +127,6 @@ services:
     restart: unless-stopped
     image: faldez/tanoshi
 
-
   mylar3:
     image: lscr.io/linuxserver/mylar3:latest
     container_name: mylar3
@@ -145,18 +167,6 @@ services:
       # - NEXTCLOUD_DATADIR="/mnt/ncdata" # Allows to set the host directory for Nextcloud's datadir. See https://github.com/nextcloud/all-in-one#how-to-change-the-default-location-of-nextclouds-datadir
       # - NEXTCLOUD_MOUNT="/mnt/" # Allows the Nextcloud container to access the chosen directory on the host. See https://github.com/nextcloud/all-in-one#how-to-allow-the-nextcloud-container-to-access-directories-on-the-host
 
-  # # Optional: Caddy reverse proxy. See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
-  # # You can find further examples here: https://github.com/nextcloud/all-in-one/discussions/588
-  # caddy:
-  #   image: caddy:alpine
-  #   restart: always
-  #   container_name: caddy
-  #   volumes:
-  #     - ./Caddyfile:/etc/caddy/Caddyfile
-  #     - ./certs:/certs
-  #     - ./config:/config
-  #     - ./data:/data
-  #     - ./sites:/srv
   cloudflared:
     image: erisamoe/cloudflared
     container_name: cloudflared
@@ -166,7 +176,6 @@ services:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
 
   ombi:
     image: lscr.io/linuxserver/ombi:latest
@@ -185,16 +194,15 @@ services:
   static-file-server:
     volumes:
       #- '/srv/nas/storage/html:/content/html'
-      - '/srv/nas/storage/public:/content'
+      - "/srv/nas/storage/public:/content"
     environment:
       - FOLDER=/content
     ports:
-      - '80:8080'
-    image: 'halverneus/static-file-server:latest'
+      - "80:8080"
+    image: "halverneus/static-file-server:latest"
 volumes:
   netdatalib:
   netdatacache:
   nextcloud_aio_mastercontainer:
   mylar-config:
   mylar-downloads:
-
