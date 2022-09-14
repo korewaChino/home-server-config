@@ -1,2 +1,5 @@
 .env
 .envrc
+
+# contains secrets
+grafana-agent.yaml

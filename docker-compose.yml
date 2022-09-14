@@ -23,6 +23,7 @@ services:
     volumes:
       - /srv/nas/config/jellyfin/:/config
       - /srv/nas/storage/Media:/media
+    privileged: true
     devices:
       - /dev/video10:/dev/video10
       - /dev/video11:/dev/video11
@@ -118,6 +119,16 @@ services:
       - /etc/localtime:/etc/localtime:ro
     image: hrfee/jfa-go
 
+  grafana-agent:
+    image: "grafana/agent:v0.27.1"
+    container_name: grafana-agent
+    privileged: true
+    volumes:
+      - "/srv/nas/grafana-agent:/etc/agent/data"
+      - "/srv/nas/config/grafana-agent.yaml:/etc/agent/agent.yaml"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/log/:/var/hostlog/
+
   tanoshi:
     container_name: tanoshi
     ports:
@@ -191,15 +202,6 @@ services:
       - 3579:3579
     restart: unless-stopped
 
-  static-file-server:
-    volumes:
-      #- '/srv/nas/storage/html:/content/html'
-      - "/srv/nas/storage/public:/content"
-    environment:
-      - FOLDER=/content
-    ports:
-      - "80:8080"
-    image: "halverneus/static-file-server:latest"
 volumes:
   netdatalib:
   netdatacache:
