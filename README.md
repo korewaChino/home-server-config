@@ -2,6 +2,8 @@
 
 These are the configuration files for my Raspberry Pi 4B home server running NixOS.
 
+You can see the live version of the server at <https://home.cappuchino.xyz>. It has a private Jellyfin instance, and a partially-public Komga server.
+
 Note: These configs cannot be used as-is, as they contain system-specific information that is only relevant to my setup.
 
 ## Hardware
