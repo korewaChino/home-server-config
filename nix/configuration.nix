@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Allow non-free packages, becasue I do not care lol
@@ -10,9 +10,14 @@
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./services.nix
-    "${fetchTarball "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz" }/raspberry-pi/4"
-    (fetchTarball "https://github.com/msteen/nixos-vscode-server/tarball/master")
+    "${
+      builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }
+    }/raspberry-pi/4"
+    (fetchTarball
+      "https://github.com/msteen/nixos-vscode-server/tarball/master")
   ];
+  # system.autoUpgrade.enable = true;
+  boot.kernelPackages = pkgs.linuxPackages_rpi4;
 
   #boot.loader.raspberryPi = {
   #  enable = true;
@@ -31,7 +36,12 @@
   hardware.enableRedistributableFirmware = true;
 
   # Don't spam logs about missing SD cards
-  boot.loader.raspberryPi.firmwareConfig = "dtparam=sd_poll_once=on";
+  # boot.loader.raspberryPi.firmwareConfig = ''
+  #   dtparam=sd_poll_once=on
+  #     arm_boost=1'';
+
+  boot.loader.raspberryPi.firmwareConfig =
+    lib.strings.concatLines [ "dtparam=sd_poll_once=on" "arm_boost=1" ];
 
   # === Network configuration. ===
   networking.hostName = "cappynas"; # Define your hostname.
@@ -105,6 +115,10 @@
     btrfs-progs
     libraspberrypi
     ncdu_2
+    htop
+    nano
+    glances
+    rclone
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -119,11 +133,12 @@
   zramSwap.enable = true;
 
   nix = {
-    autoOptimiseStore = true;
+    settings.auto-optimise-store = true;
+    settings.trusted-users = [ "root" "@wheel" "cappy" ];
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 7d";
     };
     # Free up to 1GiB whenever there is less than 100MiB left.
     extraOptions = ''
@@ -147,16 +162,17 @@
   networking.firewall.enable = false;
 
   services.nfs.server.enable = true;
-  services.nfs.server.exports = ''/srv/nas/storage         *(rw,nohide,insecure,no_subtree_check)
-/export/nas         *(rw,nohide,insecure,no_subtree_check)
+  services.nfs.server.exports = lib.strings.concatLines [
+    "/srv/nas/storage         *(rw,nohide,insecure,no_subtree_check,crossmnt,async)"
+    "/srv/nas          *(rw,nohide,insecure,no_subtree_check,crossmnt,async)"
+  ];
 
-  '';
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.05"; # Did you read the comment?
+  system.stateVersion = "23.05"; # Did you read the comment?
 
 }

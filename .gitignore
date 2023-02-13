@@ -1,5 +1,6 @@
-.env
+.env*
 .envrc
-
+!.env.example
 # contains secrets
 grafana-agent.yaml
+nix/secret.nix

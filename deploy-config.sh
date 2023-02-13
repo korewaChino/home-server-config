@@ -16,4 +16,4 @@ ssh $SSH_HOST "rm -rf /tmp/nixcfg"
 # Execute the nixos-rebuild command
 ssh $SSH_HOST "sudo nixos-rebuild switch $*"
 
-scp grafana-agent.yaml $SSH_HOST:/srv/nas/config/grafana-agent.yaml
+# scp grafana-agent.yaml $SSH_HOST:/srv/nas/config/grafana-agent.yaml
